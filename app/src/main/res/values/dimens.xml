@@ -1,0 +1,90 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <integer name="lottie_infinite">-1</integer>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="app_lovin_max_50">50dp</dimen>
+    <dimen name="app_lovin_max_90">90dp</dimen>
+    <dimen name="app_lovin_max_250">250dp</dimen>
+    <dimen name="app_lovin_max_300">300dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="search_title">5sp</dimen>
+    <dimen name="tag_title">14sp</dimen>
+    <dimen name="feed_main_title">16sp</dimen>
+    <dimen name="quiz_item_tag">14sp</dimen>
+    <dimen name="quiz_item_title">15sp</dimen>
+    <dimen name="feed_secondary_title">14sp</dimen>
+    <dimen name="tab_item_title">16sp</dimen>
+    <dimen name="item_offset">2dp</dimen>
+    <dimen name="profile_main">18sp</dimen>
+    <dimen name="profile_secondary">14sp</dimen>
+
+    <dimen name="quotes_alpha" format="float" type="dimen">0.9</dimen>
+
+    <dimen name="bottom_navigation_text_size">10sp</dimen>
+    <dimen name="bottom_navigation_active_text_size">11sp</dimen>
+    <dimen name="share_height_release">28dp</dimen>
+    <dimen name="share_height_clicked">26dp</dimen>
+    <dimen name="share_width_release">50dp</dimen>
+    <dimen name="share_width_clicked">48dp</dimen>
+    <dimen name="edit_back_release">32dp</dimen>
+    <dimen name="edit_back_clicked">30dp</dimen>
+    <dimen name="collection_release">90dp</dimen>
+    <dimen name="collection_min_width">30dp</dimen>
+    <dimen name="collection_clicked">56dp</dimen>
+    <dimen name="esmall">10sp</dimen>
+    <dimen name="small">12sp</dimen>
+    <dimen name="body">14sp</dimen>
+    <dimen name="subheading">16sp</dimen>
+    <dimen name="heading">18sp</dimen>
+    <dimen name="title">24sp</dimen>
+    <dimen name="extra_small">10sp</dimen>
+    <dimen name="big_body">16sp</dimen>
+    <dimen name="jumbo">32sp</dimen>
+    <dimen name="display">40sp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
+
+
+
+    <dimen name="editor_size">35dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+    <dimen name="top_tool_icon_width">50dp</dimen>
+    <dimen name="_90dp">90dp</dimen>
+    <dimen name="_50dp">50dp</dimen>
+    <dimen name="_250dp">250dp</dimen>
+
+    <dimen name="column_use_case_width">300dp</dimen>
+
+    <!-- dimensions for collection of collection recycler view -->
+    <dimen name="collection_recycler_view_padding">7dp</dimen>
+    <dimen name="collection_recycler_title_horizontal_padding">@dimen/_12sdp</dimen>
+    <dimen name="collection_recycler_title_vertical_padding">@dimen/_10sdp</dimen>
+    <dimen name="collection_item_view_margin">7dp</dimen>
+    <dimen name="collection_item_view_vertical_rectangle_margin">6dp</dimen>
+    <dimen name="collection_more_text_size">30sp</dimen>
+    <dimen name="collection_more_text_padding">5dp</dimen>
+    <dimen name="collection_text_in_padding">5dp</dimen>
+    <dimen name="collection_vertical_rectangle_text_padding_vertical">4dp</dimen>
+    <dimen name="collection_vertical_rectangle_text_padding_horizontal">5dp</dimen>
+    <dimen name="collection_card_radius">@dimen/_9sdp</dimen>
+    <dimen name="collection_card_vertical_rectangle_radius">8dp</dimen>
+    <dimen name="collection_card_elevation">4dp</dimen>
+    <dimen name="collection_card_vertical_rectangle_elevation">4dp</dimen>
+    <dimen name="collection_title_size">14dp</dimen>
+    <dimen name="collection_recycler_title_size">16sp</dimen>
+    <dimen name="collection_vertical_rectangle_title_size">17sp</dimen>
+    <dimen name="collection_title_margin_top">6dp</dimen>
+    <integer name="collection_vertical_rectangle_title_max_line">1</integer>
+    <integer name="collection_title_max_line">1</integer>
+    <integer name="collection_title_in_max_line">1</integer>
+    <integer name="collection_more_max_line">1</integer>
+    <integer name="circle_border_width">3</integer>
+
+</resources>

@@ -1,0 +1,2 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/brochill_sound,@raw/brochill_morning_sound"/>

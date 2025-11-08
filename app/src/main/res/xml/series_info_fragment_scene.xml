@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        android:id="@+id/transition"
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+
+
+        <!-- Define custom attributes for alpha animations -->
+        <KeyFrameSet>
+            <!-- Fade out views as scroll progresses -->
+            <KeyAttribute
+                motion:motionTarget="@id/bannerImage"
+                motion:framePosition="80"
+                android:alpha="0" />
+
+            <KeyAttribute
+                motion:motionTarget="@id/playBtn"
+                motion:framePosition="80"
+                android:alpha="0" />
+
+            <KeyAttribute
+                motion:motionTarget="@id/languageSubtitleInfo"
+                motion:framePosition="80"
+                android:alpha="0" />
+        </KeyFrameSet>
+    </Transition>
+    <!-- Define how the transition will be triggered -->
+    <OnSwipe
+        motion:touchAnchorId="@id/recycler_view"
+        motion:touchAnchorSide="top"
+        motion:dragDirection="dragUp" />
+    <!-- Starting constraints (expanded state) -->
+    <ConstraintSet android:id="@+id/start">
+        <!-- Banner Image -->
+        <Constraint
+            android:id="@+id/bannerImage"
+            motion:visibilityMode="ignore"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Back Button -->
+        <Constraint
+            android:id="@+id/back_iv"
+            motion:visibilityMode="ignore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Series Name -->
+        <Constraint
+            android:id="@+id/seriesName"
+            android:layout_width="0dp"
+            motion:visibilityMode="ignore"
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/bannerImage" />
+
+        <!-- Play Button -->
+        <Constraint
+            android:id="@+id/playBtn"
+            motion:visibilityMode="ignore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@+id/seriesName" />
+
+        <!-- Language Info -->
+        <Constraint
+            android:id="@+id/languageSubtitleInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:visibilityMode="ignore"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/playBtn" />
+
+        <!-- RecyclerView -->
+        <Constraint
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="56dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/languageSubtitleInfo" />
+    </ConstraintSet>
+
+    <!-- Ending constraints (collapsed state) -->
+    <ConstraintSet android:id="@+id/end">
+        <!-- Hide banner by setting height to 0 -->
+        <Constraint
+            android:id="@+id/bannerImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Keep back button visible and position it at the top -->
+        <Constraint
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:visibilityMode="ignore"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Position series name next to back button -->
+        <Constraint
+            android:id="@+id/seriesName"
+            android:layout_width="0dp"
+            android:layout_marginTop="14dp"
+            android:maxLines="1"
+            motion:visibilityMode="ignore"
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toEndOf="@id/back_iv"
+            motion:layout_constraintTop_toTopOf="@id/back_iv"
+            motion:layout_constraintBottom_toBottomOf="@id/back_iv" />
+
+        <!-- Hide play button -->
+        <Constraint
+            android:id="@+id/playBtn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            motion:layout_constraintTop_toBottomOf="@+id/seriesName" />
+
+        <!-- Hide language info -->
+        <Constraint
+            android:id="@+id/languageSubtitleInfo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/playBtn" />
+
+        <!-- Expand RecyclerView to fill the space -->
+        <Constraint
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="56dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+</MotionScene>

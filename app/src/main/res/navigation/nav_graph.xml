@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.zen.videoplayertestapp.ui.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/videoRendringFragment"
+        android:name="com.zen.videoplayertestapp.ui.fragments.VideoRendringFragment"
+        android:label="fragment_video_rendring"
+        tools:layout="@layout/fragment_video_rendring" />
+    <fragment
+        android:id="@+id/videoInfoFragment"
+        android:name="com.zen.videoplayertestapp.ui.fragments.VideoInfoFragment"
+        android:label="fragment_video_info"
+        tools:layout="@layout/fragment_video_info" />
+    <fragment
+        android:id="@+id/allCollectionsFragment"
+        android:name="com.zen.videoplayertestapp.ui.fragments.AllCollectionsFragment"
+        android:label="fragment_all_collections"
+        tools:layout="@layout/fragment_all_collections" />
+</navigation>
