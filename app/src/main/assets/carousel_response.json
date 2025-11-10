@@ -1,0 +1,62 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "title": "Series One",
+      "mediaFileUrl": null,
+      "type": "series",
+      "carouselId": "ck7fvu3l30001i3s6bcxves5l",
+      "thumbImageBs2Url": "https://files.barabar.app/2024/03/28/14/KQVddzgeT.jpg",
+      "languageId": "cjt8l3fk70001res63r9sgzs4",
+      "isActive": 1,
+      "accessType": "seriesCollection",
+      "isArchived": 0,
+      "createdAt": "2024-12-15 08:31:34",
+      "updatedAt": "2024-12-15 08:31:34",
+      "languagesInfo": "",
+      "subTitlesInfo": "",
+      "totalViews": 2928,
+      "totalShares": 1265,
+      "status": "active",
+      "dynamicLink": "https://brochill.page.link/qgEQUQY8fPmGJxBJ7"
+    },
+    {
+      "title": "Series One",
+      "mediaFileUrl": null,
+      "type": "series",
+      "carouselId": "ck7fvu3l30001i3s6bcxves5l",
+      "thumbImageBs2Url": "https://files.barabar.app/2024/02/29/16/YCjr5A5Fz.jpg",
+      "languageId": "cjt8l3fk70001res63r9sgzs4",
+      "isActive": 1,
+      "accessType": "series",
+      "isArchived": 0,
+      "createdAt": "2024-12-15 08:31:34",
+      "updatedAt": "2024-12-15 08:31:34",
+      "languagesInfo": "",
+      "subTitlesInfo": "",
+      "totalViews": 2928,
+      "totalShares": 1265,
+      "status": "active",
+      "dynamicLink": "https://brochill.page.link/qgEQUQY8fPmGJxBJ7"
+    },
+    {
+      "title": "Series One",
+      "mediaFileUrl": "https://files5.brochill.com/videos/2024/12/27/16/Udi6Zclav.mp4",
+      "type": "series",
+      "carouselId": "ck7fvu3l30001i3s6bcxves5l",
+      "thumbImageBs2Url": "https://files.barabar.app/2024/01/14/10/cFx3xhnW2.jpg",
+      "languageId": "cjt8l3fk70001res63r9sgzs4",
+      "isActive": 1,
+      "accessType": "episode",
+      "isArchived": 0,
+      "createdAt": "2024-12-15 08:31:34",
+      "updatedAt": "2024-12-15 08:31:34",
+      "languagesInfo": "",
+      "subTitlesInfo": "",
+      "totalViews": 2928,
+      "totalShares": 1265,
+      "status": "active",
+      "dynamicLink": "https://brochill.page.link/qgEQUQY8fPmGJxBJ7"
+    }
+  ]
+}

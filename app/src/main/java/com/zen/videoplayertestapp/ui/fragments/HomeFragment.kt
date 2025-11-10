@@ -78,10 +78,10 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
                 callData()
                 // Fetch recommendations only if not already fetched
                 if (viewModel.carouselData.value == null) {
-                    viewModel.fetchCarouselData()
+                    viewModel.fetchCarouselData(requireContext())
                 }
                 if (viewModel.homepageData.value == null) {
-                    viewModel.fetchHomepageData()
+                    viewModel.fetchHomepageData(requireContext())
                 }
             }else{
                 noInternet.visibility = View.VISIBLE
@@ -94,10 +94,10 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
             callData()
             // Fetch recommendations only if not already fetched
             if (viewModel.carouselData.value == null) {
-                viewModel.fetchCarouselData()
+                viewModel.fetchCarouselData(requireContext())
             }
             if (viewModel.homepageData.value == null) {
-                viewModel.fetchHomepageData()
+                viewModel.fetchHomepageData(requireContext())
             }
         }else{
             noInternet.visibility = View.VISIBLE
@@ -121,7 +121,7 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
             } else {
                 // minisHomeAdapter.hideLoader(loaderIndex)
                 response?.data?.forEach { seriesItem ->
-                    if (seriesItem.series_ui_type.equals("horizontal")) {
+                    if (false) {
                         val list = mutableListOf<Episode>()
                         val index1 = minisHomeAdapter.addHorizontalItme()
                         minisHomeAdapter.notifyItemChanged(index1)
@@ -162,7 +162,8 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
                         }
 
 
-                    } else {
+                    }
+                    else {
 //                        (seriesItem.series_ui_type.equals("vertical"))
                         val list = mutableListOf<Series>()
                         val index2 = minisHomeAdapter.addVerticalItem()

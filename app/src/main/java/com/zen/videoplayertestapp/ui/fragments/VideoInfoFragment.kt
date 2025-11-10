@@ -97,12 +97,12 @@ class VideoInfoFragment : Fragment(), RecyclerviewClickListener,
             }
         } else {
             if (viewModel.seriesEpisodesData.value == null) {
-                viewModel.fetchSeriesEpisodesData()
+                viewModel.fetchSeriesEpisodesData(requireContext())
             }
         }
 
         if (viewModel.recommendationData.value == null) {
-            viewModel.fetchRecommendationsData()
+            viewModel.fetchRecommendationsData(requireContext())
         }
         getData()
 
@@ -115,7 +115,7 @@ class VideoInfoFragment : Fragment(), RecyclerviewClickListener,
 
         }
 
-        viewModel.fetchSeriesInfoData()
+        viewModel.fetchSeriesInfoData(requireContext())
 
         getSeriesInfoData()
 

@@ -1,5 +1,6 @@
 package com.zen.videoplayertestapp.ui.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.brochill.minismodule.data.model.RecommendationsResponse
 import com.brochill.minismodule.data.model.Series
 import com.brochill.minismodule.data.model.SeriesInfoResponse
 import com.brochill.minismodule.data.model.SeriesepisodesResponse
+import com.google.gson.Gson
 import com.zen.videoplayertestapp.core.networkmodule.RetrofitAPIClient
 import com.zen.videoplayertestapp.data.repo.Repository
 import kotlinx.coroutines.launch
@@ -63,27 +65,54 @@ class CentralizeViewmodel(private val repo: Repository) : ViewModel() {
     }
 
     // Call this function to fetch data from API
-    fun fetchHomepageData() {
+    fun fetchHomepageData(context: Context) {
         viewModelScope.launch {
-            _homepageData.postValue(repo.fetchHomepageData())
+            val json = context.assets.open("homepage_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response = Gson().fromJson(json, HomepageResponse::class.java)
+            _homepageData.postValue(response)
+          //  _homepageData.postValue(repo.fetchHomepageData())
         }
     }
     // Call this function to fetch data from API
-    fun fetchCarouselData() {
+    fun fetchCarouselData(context: Context) {
         viewModelScope.launch {
-            _carouselpageData.postValue(repo.fetchCarouselData())
+            val json = context.assets.open("carousel_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response = Gson().fromJson(json, CarouselResponse::class.java)
+            _carouselpageData.postValue(response)
+
+           // _carouselpageData.postValue(repo.fetchCarouselData())
         }
     }
 
-    fun fetchRecommendationsData() {
+    fun fetchRecommendationsData(context: Context) {
         viewModelScope.launch {
-            _recommendatoinsData.postValue(repo.fetchRecommendationsData())
+            val json = context.assets.open("recommendations_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response = Gson().fromJson(json, RecommendationsResponse::class.java)
+            _recommendatoinsData.postValue(response)
+
+           // _recommendatoinsData.postValue(repo.fetchRecommendationsData())
         }
     }
 
-    fun fetchSeriesEpisodesData() {
+    fun fetchSeriesEpisodesData(context: Context) {
         viewModelScope.launch {
-            _seriesEpisodesData.postValue(repo.fetchSeriesEpisodesData())
+            val json = context.assets.open("series_episodes_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response = Gson().fromJson(json, SeriesepisodesResponse::class.java)
+            _seriesEpisodesData.postValue(response)
+
+           // _seriesEpisodesData.postValue(repo.fetchSeriesEpisodesData())
         }
     }
     fun fetchSeriesEpisodesData2() {
@@ -98,9 +127,16 @@ class CentralizeViewmodel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    fun fetchSeriesInfoData(){
+    fun fetchSeriesInfoData(context: Context){
         viewModelScope.launch {
-            _seriesInfoData.postValue(repo.fetchSeriesInfoData())
+            val json = context.assets.open("series_info_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response = Gson().fromJson(json, SeriesInfoResponse::class.java)
+            _seriesInfoData.postValue(response)
+
+          //  _seriesInfoData.postValue(repo.fetchSeriesInfoData())
         }
     }
 
