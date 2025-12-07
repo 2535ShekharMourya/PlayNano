@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitAPIClient {
     private var retrofitAPIClient: ApiService? = null
-    private var BASE_URL = ""
+    private var BASE_URL = "https://dev-json-api.brochill.app/v1/data/"
 
     fun getInstance(): ApiService? {
         if (retrofitAPIClient == null) {

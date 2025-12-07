@@ -67,52 +67,52 @@ class CentralizeViewmodel(private val repo: Repository) : ViewModel() {
     // Call this function to fetch data from API
     fun fetchHomepageData(context: Context) {
         viewModelScope.launch {
-            val json = context.assets.open("homepage_response.json")
-                .bufferedReader()
-                .use { it.readText() }
-
-            val response = Gson().fromJson(json, HomepageResponse::class.java)
-            _homepageData.postValue(response)
-          //  _homepageData.postValue(repo.fetchHomepageData())
+//            val json = context.assets.open("homepage_response.json")
+//                .bufferedReader()
+//                .use { it.readText() }
+//
+//            val response = Gson().fromJson(json, HomepageResponse::class.java)
+//            _homepageData.postValue(response)
+            _homepageData.postValue(repo.fetchHomepageData())
         }
     }
     // Call this function to fetch data from API
     fun fetchCarouselData(context: Context) {
         viewModelScope.launch {
-            val json = context.assets.open("carousel_response.json")
-                .bufferedReader()
-                .use { it.readText() }
+//            val json = context.assets.open("carousel_response.json")
+//                .bufferedReader()
+//                .use { it.readText() }
+//
+//            val response = Gson().fromJson(json, CarouselResponse::class.java)
+//            _carouselpageData.postValue(response)
 
-            val response = Gson().fromJson(json, CarouselResponse::class.java)
-            _carouselpageData.postValue(response)
-
-           // _carouselpageData.postValue(repo.fetchCarouselData())
+            _carouselpageData.postValue(repo.fetchCarouselData())
         }
     }
 
     fun fetchRecommendationsData(context: Context) {
         viewModelScope.launch {
-            val json = context.assets.open("recommendations_response.json")
-                .bufferedReader()
-                .use { it.readText() }
+//            val json = context.assets.open("recommendations_response.json")
+//                .bufferedReader()
+//                .use { it.readText() }
+//
+//            val response = Gson().fromJson(json, RecommendationsResponse::class.java)
+//            _recommendatoinsData.postValue(response)
 
-            val response = Gson().fromJson(json, RecommendationsResponse::class.java)
-            _recommendatoinsData.postValue(response)
-
-           // _recommendatoinsData.postValue(repo.fetchRecommendationsData())
+            _recommendatoinsData.postValue(repo.fetchRecommendationsData())
         }
     }
 
     fun fetchSeriesEpisodesData(context: Context) {
         viewModelScope.launch {
-            val json = context.assets.open("series_episodes_response.json")
-                .bufferedReader()
-                .use { it.readText() }
+//            val json = context.assets.open("series_episodes_response.json")
+//                .bufferedReader()
+//                .use { it.readText() }
+//
+//            val response = Gson().fromJson(json, SeriesepisodesResponse::class.java)
+//            _seriesEpisodesData.postValue(response)
 
-            val response = Gson().fromJson(json, SeriesepisodesResponse::class.java)
-            _seriesEpisodesData.postValue(response)
-
-           // _seriesEpisodesData.postValue(repo.fetchSeriesEpisodesData())
+            _seriesEpisodesData.postValue(repo.fetchSeriesEpisodesData())
         }
     }
     fun fetchSeriesEpisodesData2() {
@@ -129,14 +129,14 @@ class CentralizeViewmodel(private val repo: Repository) : ViewModel() {
 
     fun fetchSeriesInfoData(context: Context){
         viewModelScope.launch {
-            val json = context.assets.open("series_info_response.json")
-                .bufferedReader()
-                .use { it.readText() }
+//            val json = context.assets.open("series_info_response.json")
+//                .bufferedReader()
+//                .use { it.readText() }
+//
+//            val response = Gson().fromJson(json, SeriesInfoResponse::class.java)
+//            _seriesInfoData.postValue(response)
 
-            val response = Gson().fromJson(json, SeriesInfoResponse::class.java)
-            _seriesInfoData.postValue(response)
-
-          //  _seriesInfoData.postValue(repo.fetchSeriesInfoData())
+            _seriesInfoData.postValue(repo.fetchSeriesInfoData())
         }
     }
 
