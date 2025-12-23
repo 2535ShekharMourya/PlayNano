@@ -8,8 +8,18 @@ import com.brochill.minismodule.data.model.RecommendationsResponse
 import com.brochill.minismodule.data.model.SeriesInfoResponse
 import com.brochill.minismodule.data.model.SeriesepisodesResponse
 import com.zen.videoplayertestapp.core.networkmodule.RetrofitAPIClient
+import com.zen.videoplayertestapp.data.local.room.ShortsSeriesDao
+import com.zen.videoplayertestapp.data.local.room.ShortsSeriesLocalDataSource
+import com.zen.videoplayertestapp.data.remote.ApiService
+import com.zen.videoplayertestapp.data.remote.ShortsSeriesRemoteDataSource
 
-class RepositoryImp() : Repository{
+class RepositoryImp(  private val shortsSeriesRemoteDataSource: ShortsSeriesRemoteDataSource,
+                    private val shortsSeriesLocalDataSource: ShortsSeriesLocalDataSource) : Repository{
+
+    //    override suspend fun getHomepageData(): Resource<HomepageResponse?> = withContext(ioDispatcher) { minisRemoteDataSource.fetchHomepageData() }
+//    override suspend fun getCarouselData(): Resource<CarouselResponse?> = withContext(ioDispatcher) { minisRemoteDataSource.fetchCarouselData() }
+
+
     // Read from assets folder
 //    fun loadJSONFromAsset(context: Context, fileName: String): String {
 //        return context.assets.open(fileName).bufferedReader().use { it.readText() }
@@ -25,7 +35,6 @@ class RepositoryImp() : Repository{
         return try {
             logMessage(" getHomepageData(): ${  RetrofitAPIClient.getInstance()?.getHomepageData()}")
             RetrofitAPIClient.getInstance()?.getHomepageData()
-
 
         } catch (e: Exception) {
             e.printStackTrace()

@@ -1,6 +1,8 @@
 package com.zen.videoplayertestapp.ui.fragments
 
 import android.os.Bundle
+
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +24,12 @@ import com.brochill.minismodule.util.LogStatus.Companion.logs
 import com.brochill.minismodule.util.LogStatus.Companion.logs1
 import com.brochill.minismodule.util.LogStatus.Companion.mLog
 import com.brochill.minismodule.util.RecyclerviewClickListener
+import com.zen.videoplayertestapp.core.networkmodule.RetrofitAPIClient
 import com.zen.videoplayertestapp.core.util.Utils
+import com.zen.videoplayertestapp.data.local.room.ShortsSeriesDatabase
+import com.zen.videoplayertestapp.data.local.room.ShortsSeriesLocalDataSourceImp
+import com.zen.videoplayertestapp.data.remote.ShortsSeriesRemoteDataSource
+import com.zen.videoplayertestapp.data.remote.ShortsSeriesRemoteDataSourceImp
 import com.zen.videoplayertestapp.data.repo.Repository
 import com.zen.videoplayertestapp.data.repo.RepositoryImp
 import com.zen.videoplayertestapp.ui.adapter.CarouselAdapter
@@ -32,14 +39,22 @@ import com.zen.videoplayertestapp.ui.viewmodels.CentralizedViewmodelFactory
 
 class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.CarouselItemListener {
     lateinit var minisHomeAdapter: MinisHomeAdapter
-    // 1. Get the concrete implementation instance
-    private val minisRepo: Repository = RepositoryImp()
 
-    // 2. Instantiate the Factory, providing the repo instance
-    private val viewModelFactory = CentralizedViewmodelFactory(minisRepo)
+    // 1. Create a Repository instance
+    private val shortsSeriesRepo: Repository by lazy {
+         val remoteDataSource:ShortsSeriesRemoteDataSource = ShortsSeriesRemoteDataSourceImp(RetrofitAPIClient.getInstance())
+        val localDataSource = ShortsSeriesLocalDataSourceImp(ShortsSeriesDatabase.getInstance(requireContext()).shortsSeriesDao())
+        RepositoryImp(remoteDataSource, localDataSource)
+    }
+
+    // 2. Create a Factory instance
+    private val viewModelFactory by lazy {
+        CentralizedViewmodelFactory(shortsSeriesRepo)
+    }
 
     // 3. Use the by viewModels delegate with the Factory
     private val viewModel: CentralizeViewmodel by activityViewModels { viewModelFactory }
+
     lateinit var homeRecyclerview: RecyclerView
     lateinit var noInternet: LinearLayout
     lateinit var tryAgain:AppCompatButton
@@ -162,12 +177,12 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
                         }
 
 
-                    }
-                    else {
+                    } else {
 //                        (seriesItem.series_ui_type.equals("vertical"))
                         val list = mutableListOf<Series>()
                         val index2 = minisHomeAdapter.addVerticalItem()
                         minisHomeAdapter.notifyItemChanged(index2)
+                        Log.d("Vertical", seriesItem.series.toString())
                         seriesItem.series.forEach { item ->
                             val data = Series(
                                 access_type = item.access_type,

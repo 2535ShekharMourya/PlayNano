@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
+//    id("dagger.hilt.android.plugin")
+//    id("kotlin-parcelize")
 }
 
 android {
@@ -102,6 +105,14 @@ dependencies {
     // Dimensions
     implementation("com.intuit.ssp:ssp-android:1.0.6")
     implementation("com.intuit.sdp:sdp-android:1.0.6")
+
+    // Room
+    val roomVersion = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+    kapt("androidx.room:room-compiler:$roomVersion")
 
   
 }
