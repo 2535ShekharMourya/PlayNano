@@ -16,6 +16,7 @@ data class CarouselModel(
     @SerializedName("media_file_url") var mediaFileUrl: String? = null,
     @SerializedName("type") var type: String? = null,
     @SerializedName("carousel_id") var carouselId: String? = null,
+    @SerializedName("series_ui_type") var seriesUiType: String? = null,
     @SerializedName("thumb_image_bs2_url") var thumbImageBs2Url: String? = null,
     @SerializedName("language_id") var languageId: String? = null,
     @SerializedName("is_active") var isActive: Int? = null,

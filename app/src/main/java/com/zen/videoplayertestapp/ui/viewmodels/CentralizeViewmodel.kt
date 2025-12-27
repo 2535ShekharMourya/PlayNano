@@ -1,11 +1,13 @@
 package com.zen.videoplayertestapp.ui.viewmodels
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brochill.minismodule.CarouselModel
 import com.brochill.minismodule.CarouselResponse
+import com.brochill.minismodule.data.model.DashboardResponse
 import com.brochill.minismodule.data.model.Episode
 import com.brochill.minismodule.data.model.HomepageResponse
 import com.brochill.minismodule.data.model.RecommendationsResponse
@@ -14,6 +16,8 @@ import com.brochill.minismodule.data.model.SeriesInfoResponse
 import com.brochill.minismodule.data.model.SeriesepisodesResponse
 import com.google.gson.Gson
 import com.zen.videoplayertestapp.core.networkmodule.RetrofitAPIClient
+import com.zen.videoplayertestapp.core.sealedstate.Resource
+import com.zen.videoplayertestapp.data.dummydata.MultiviewDataItem
 import com.zen.videoplayertestapp.data.repo.Repository
 import kotlinx.coroutines.launch
 
@@ -44,6 +48,9 @@ class CentralizeViewmodel(private val repo: Repository) : ViewModel() {
     var seriesItem = MutableLiveData<Series>()
     var keymatching:String? =null
     var position:Int?=null
+
+    private val _dashboardData = MutableLiveData<Resource<List<MultiviewDataItem>>>()
+    val dashboardData: LiveData<Resource<List<MultiviewDataItem>>> = _dashboardData
 
 
 
@@ -138,6 +145,36 @@ class CentralizeViewmodel(private val repo: Repository) : ViewModel() {
 
             _seriesInfoData.postValue(repo.fetchSeriesInfoData())
         }
+    }
+    fun getDashboardData(context: Context):Resource<List<MultiviewDataItem>>{
+
+                        val json = context.assets.open("carousel_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response = Gson().fromJson(json, CarouselResponse::class.java)
+
+            _carouselpageData.postValue(response)
+
+                        val json2 = context.assets.open("homepage_response.json")
+                .bufferedReader()
+                .use { it.readText() }
+
+            val response2 = Gson().fromJson(json2, DashboardResponse::class.java)
+         //   _homepageData.postValue(response2)
+
+        var mList: ArrayList<MultiviewDataItem> = ArrayList()
+        var carouselList:List<CarouselModel> = response.data?.filter { it.seriesUiType == "carousel"} ?: emptyList()
+        var recentlyList:List<Series> = response2.seriesList?.filter { it.access_type == "series"} ?: emptyList()
+      //  var recommendedList:List<Series> = response2.seriesList?.filter { it.access_type == "series"} ?: emptyList()
+
+        mList.add(MultiviewDataItem.Carousel(carouselList))
+        mList.add(MultiviewDataItem.RecentlyViewed(recentlyList))
+
+
+
+        return Resource.Success(mList)
+
     }
 
 }

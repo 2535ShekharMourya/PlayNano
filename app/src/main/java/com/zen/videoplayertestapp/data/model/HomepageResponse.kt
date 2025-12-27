@@ -4,6 +4,10 @@ data class HomepageResponse(
     var `data`: List<SeriesItem>,
     val status: String
 )
+data class DashboardResponse(
+    val status: String?=null,
+    val seriesList: List<Series>
+)
 data class SeriesItem(
     val access_type: String,
     val created_at: String,

@@ -1,18 +1,18 @@
-package com.brochill.minismodule.data.model
+package com.zen.videoplayertestapp.data.model
 
-sealed class Resource<out T> {
+sealed class Resource2<out T> {
     data class Loading<out T>(
         val partialData: T? = null,
         val isLoadingInitial: Boolean = true,
         val isLoadingMore: Boolean = false
-    ) : Resource<T>()
+    ) : Resource2<T>()
 
     data class Success<out T>(
         val data: T,
         val message: String? = null,
         val fromCache: Boolean = false,
         val isPaginated: Boolean = false
-    ) : Resource<T>()
+    ) : Resource2<T>()
 
     data class Error<out T>(
         val message: String,
@@ -20,9 +20,9 @@ sealed class Resource<out T> {
         val throwable: Throwable? = null,
         val partialData: T? = null, // For showing cached data with error
         val shouldRetry: Boolean = true
-    ) : Resource<T>()
+    ) : Resource2<T>()
 
-    object Empty : Resource<Nothing>()
+    object Empty : Resource2<Nothing>()
 }
 
 enum class ErrorType {
