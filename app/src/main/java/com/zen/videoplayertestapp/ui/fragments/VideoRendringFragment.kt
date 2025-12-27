@@ -10,8 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.brochill.minismodule.util.ClickListener
 import com.zen.videoplayertestapp.R
+import com.zen.videoplayertestapp.core.networkmodule.RetrofitAPIClient
+import com.zen.videoplayertestapp.data.local.room.ShortsSeriesDatabase
+import com.zen.videoplayertestapp.data.local.room.ShortsSeriesLocalDataSourceImp
+import com.zen.videoplayertestapp.data.remote.ShortsSeriesRemoteDataSource
+import com.zen.videoplayertestapp.data.remote.ShortsSeriesRemoteDataSourceImp
 import com.zen.videoplayertestapp.data.repo.Repository
 import com.zen.videoplayertestapp.data.repo.RepositoryImp
 import com.zen.videoplayertestapp.databinding.FragmentVideoRendringBinding
@@ -21,13 +28,19 @@ import com.zen.videoplayertestapp.ui.viewmodels.CentralizedViewmodelFactory
 
 class VideoRendringFragment : Fragment(), ClickListener {
     lateinit var adapter: MinisPlayerAdapter
-    // lateinit var adapter: PlayerScrollPagerAdapter
 
-    // 1. Get the concrete implementation instance
-    private val minisRepo: Repository = RepositoryImp()
+    // 1. Create a Repository instance
+    private val shortsSeriesRepo: Repository by lazy {
+        val remoteDataSource: ShortsSeriesRemoteDataSource = ShortsSeriesRemoteDataSourceImp(
+            RetrofitAPIClient.getInstance())
+        val localDataSource = ShortsSeriesLocalDataSourceImp(ShortsSeriesDatabase.getInstance(requireContext()).shortsSeriesDao())
+        RepositoryImp(remoteDataSource, localDataSource)
+    }
 
-    // 2. Instantiate the Factory, providing the repo instance
-    private val viewModelFactory = CentralizedViewmodelFactory(minisRepo)
+    // 2. Create a Factory instance
+    private val viewModelFactory by lazy {
+        CentralizedViewmodelFactory(shortsSeriesRepo)
+    }
 
     // 3. Use the by viewModels delegate with the Factory
     private val viewModel: CentralizeViewmodel by activityViewModels { viewModelFactory }
@@ -51,23 +64,47 @@ class VideoRendringFragment : Fragment(), ClickListener {
             viewModel.position?.let {
                 currentPosition = it
                 binding.viewpager.setCurrentItem(it, false)
-                // Start playing after ViewPager is settled
-                binding.viewpager.postDelayed({
-                    adapter.playVideoAt(currentPosition)
-                }, 1)
             }
         }
 
-        binding.viewpager.registerOnPageChangeCallback(object :
-            androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+        binding.viewpager.registerOnPageChangeCallback( object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                // Pause all other videos
-                adapter.pauseAllExcept(position)
-                // Play the current video
-                adapter.playVideoAt(position)
                 currentPosition = position
+                val rv = binding.viewpager.getChildAt(0) as? RecyclerView
+                var holder = rv?.findViewHolderForAdapterPosition(position) as? MinisPlayerAdapter.VideoViewHolder
 
+                if (holder != null) {
+                    holder.playVideo()
+                } else {
+                    rv?.post {
+                        holder = rv.findViewHolderForAdapterPosition(position) as? MinisPlayerAdapter.VideoViewHolder
+                        holder?.playVideo()
+                    }
+                }
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                when(state){
+                    ViewPager2.SCROLL_STATE_IDLE -> {
+                        playVideo()
+                    }
+                    ViewPager2.SCROLL_STATE_DRAGGING -> {
+                        pauseVideo()
+                    }
+                    ViewPager2.SCROLL_STATE_SETTLING -> {
+                    }
+                }
             }
 
         }
@@ -83,13 +120,12 @@ class VideoRendringFragment : Fragment(), ClickListener {
 
     override fun onPause() {
         super.onPause()
-        // Pause video when fragment is not visible
-        adapter.pauseVideoAt(currentPosition)
+
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.playVideoAt(currentPosition)
+
 
     }
 
@@ -110,6 +146,17 @@ class VideoRendringFragment : Fragment(), ClickListener {
                 .build()
         )
         findNavController().popBackStack()
+    }
+
+    fun playVideo(){
+        val recyclerView = binding.viewpager.getChildAt(0) as? RecyclerView
+        val holder = recyclerView?.findViewHolderForAdapterPosition(currentPosition) as? MinisPlayerAdapter.VideoViewHolder
+        holder?.playVideo()
+    }
+    fun pauseVideo(){
+        val recyclerView = binding.viewpager.getChildAt(0) as? RecyclerView
+        val holder = recyclerView?.findViewHolderForAdapterPosition(currentPosition) as? MinisPlayerAdapter.VideoViewHolder
+        holder?.pauseVideo()
     }
 }
 

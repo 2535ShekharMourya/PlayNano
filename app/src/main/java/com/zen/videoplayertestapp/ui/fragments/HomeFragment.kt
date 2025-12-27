@@ -34,11 +34,13 @@ import com.zen.videoplayertestapp.data.repo.Repository
 import com.zen.videoplayertestapp.data.repo.RepositoryImp
 import com.zen.videoplayertestapp.ui.adapter.CarouselAdapter
 import com.zen.videoplayertestapp.ui.adapter.MinisHomeAdapter
+import com.zen.videoplayertestapp.ui.homepageadapter.DashboardAdapter
 import com.zen.videoplayertestapp.ui.viewmodels.CentralizeViewmodel
 import com.zen.videoplayertestapp.ui.viewmodels.CentralizedViewmodelFactory
 
 class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.CarouselItemListener {
     lateinit var minisHomeAdapter: MinisHomeAdapter
+    lateinit var dashboardAdapter: DashboardAdapter
 
     // 1. Create a Repository instance
     private val shortsSeriesRepo: Repository by lazy {
@@ -86,37 +88,39 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
 
         initRecyclerView()
 
-        tryAgain.setOnClickListener {
-            if (Utils.isInternetAvailable(requireContext())){
-                //
-                noInternet.visibility = View.GONE
-                callData()
-                // Fetch recommendations only if not already fetched
-                if (viewModel.carouselData.value == null) {
-                    viewModel.fetchCarouselData(requireContext())
-                }
-                if (viewModel.homepageData.value == null) {
-                    viewModel.fetchHomepageData(requireContext())
-                }
-            }else{
-                noInternet.visibility = View.VISIBLE
-            }
-        }
-
-        if (Utils.isInternetAvailable(requireContext())){
-            //
-            noInternet.visibility = View.GONE
-            callData()
-            // Fetch recommendations only if not already fetched
-            if (viewModel.carouselData.value == null) {
-                viewModel.fetchCarouselData(requireContext())
-            }
-            if (viewModel.homepageData.value == null) {
-                viewModel.fetchHomepageData(requireContext())
-            }
-        }else{
-            noInternet.visibility = View.VISIBLE
-        }
+//        tryAgain.setOnClickListener {
+//            if (Utils.isInternetAvailable(requireContext())){
+//                //
+//                noInternet.visibility = View.GONE
+//               // callData()
+//                // Fetch recommendations only if not already fetched
+//                if (viewModel.carouselData.value == null) {
+//                    viewModel.fetchCarouselData(requireContext())
+//                }
+//                if (viewModel.homepageData.value == null) {
+//                    viewModel.fetchHomepageData(requireContext())
+//                }
+//            }else{
+//                noInternet.visibility = View.VISIBLE
+//            }
+//        }
+//
+//        if (Utils.isInternetAvailable(requireContext())){
+//            //
+//            noInternet.visibility = View.GONE
+//           // callData()
+//            // Fetch recommendations only if not already fetched
+//            if (viewModel.carouselData.value == null) {
+//                viewModel.fetchCarouselData(requireContext())
+//            }
+//            if (viewModel.homepageData.value == null) {
+//                viewModel.fetchHomepageData(requireContext())
+//            }
+//        }else{
+//            noInternet.visibility = View.VISIBLE
+//        }
+        viewModel.getDashboardData(requireContext())
+        viewModel.
 
 
     }
@@ -236,7 +240,8 @@ class HomeFragment : Fragment(), RecyclerviewClickListener, CarouselAdapter.Caro
     }
 
     fun initRecyclerView() {
-        minisHomeAdapter = MinisHomeAdapter(requireContext(), this, this)
+       // minisHomeAdapter = MinisHomeAdapter(requireContext(), this, this)
+        minisHomeAdapter = DashboardAdapter(requireContext(), this, this)
         homeRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         homeRecyclerview.adapter = minisHomeAdapter
     }

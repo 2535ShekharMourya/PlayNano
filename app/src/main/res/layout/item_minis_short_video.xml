@@ -71,6 +71,73 @@
                 android:layout_height="0dp"
                 android:visibility="visible" />
         </com.google.android.exoplayer2.ui.PlayerView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/videoVideoParent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+
+            >
+            <VideoView
+                android:id="@+id/videoPlayer_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/videoPlayer_view">
+
+                <ImageView
+                    android:id="@+id/back_iv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+                <TextView
+                    android:id="@+id/quizitem_title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:text="Title of the Series Video"
+                    android:textColor="@color/color_body_text"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintWidth_percent="0.55" />
+
+
+            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/videoViewProgressBar"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,19 +163,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_green_trans_play" />
 
-
-        <!--<app.com.brochill.customlottie.CustomLottieAnim
-            android:id="@+id/lottie"
-            android:visibility="gone"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/swipe"
-            app:lottie_repeatCount="-1" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

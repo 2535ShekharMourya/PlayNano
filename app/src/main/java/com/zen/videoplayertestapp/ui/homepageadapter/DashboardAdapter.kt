@@ -1,15 +1,51 @@
 package com.zen.videoplayertestapp.ui.homepageadapter
 
+import android.content.Context
+import android.os.Handler
+import android.util.TypedValue
 import com.zen.videoplayertestapp.data.dummydata.MultiviewDataItem
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
+import com.brochill.minismodule.CarouselModel
+import com.brochill.minismodule.CarouselResponse
+import com.brochill.minismodule.data.model.Episode
+import com.brochill.minismodule.data.model.Series
+import com.brochill.minismodule.util.LogStatus.Companion.logs
+import com.brochill.minismodule.util.LogStatus.Companion.logs1
+import com.brochill.minismodule.util.RecyclerviewClickListener
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.zen.videoplayertestapp.R
+import com.zen.videoplayertestapp.databinding.CarouselItemLayoutBinding
+import com.zen.videoplayertestapp.databinding.CarouselItemviewBinding
+import com.zen.videoplayertestapp.databinding.SeriesCollectionVerticalBinding
+import com.zen.videoplayertestapp.ui.adapter.CarouselAdapter
+import com.zen.videoplayertestapp.ui.adapter.MinisHomeAdapter.CarouselViewHolder
+import com.zen.videoplayertestapp.ui.adapter.MinisHomeAdapter.SeriesVideoVerticalViewHolder
+import com.zen.videoplayertestapp.ui.adapter.SeriesVideoVerticalAdapter
 
 
-class DashboardAdapter(private val dataList: List<MultiviewDataItem>?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DashboardAdapter(val context: Context, private val dataList: List<MultiviewDataItem>?, var listener: RecyclerviewClickListener, var carouselItemListener: CarouselAdapter.CarouselItemListener):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), CarouselAdapter.CarouselItemListener, RecyclerviewClickListener {
+
+    val handler = Handler()
+    lateinit var slideHandler: Runnable
+    var isSliderHandlerStarted = false
+    var numberOfItems: Int = 0
+    var lastIndex: Int = 0
+    var nextItem: Int = 0
 
     override fun getItemViewType(position: Int): Int {
         return when (dataList?.get(position)) {
@@ -29,13 +65,13 @@ class DashboardAdapter(private val dataList: List<MultiviewDataItem>?): Recycler
         return when (viewType) {
             DashboardDataItemType.CAROUSEL -> {
                 val binding =
-                    CarouselListItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    CarouselItemviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CarouselItemViewHolder(binding)
             }
             DashboardDataItemType.RECENTLY_VIEWED -> {
                 val binding =
-                    CollageItemListLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                CollageItemViewHolder(binding)
+                    SeriesCollectionVerticalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                SeriesItemViewHolder(binding)
             }
 //            DashboardDataItemType.BANNER -> {
 //                val binding =
@@ -83,7 +119,7 @@ class DashboardAdapter(private val dataList: List<MultiviewDataItem>?): Recycler
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = dataList?.get(position)) {
             is MultiviewDataItem.Carousel -> { (holder as CarouselItemViewHolder).bindCarouselItems(item.carousels) }
-            is MultiviewDataItem.RecentlyViewed -> { (holder as CollageItemViewHolder).bingCollage(item.recentlyViewed) }
+            is MultiviewDataItem.RecentlyViewed -> { (holder as SeriesItemViewHolder).bingCollage(item.recentlyViewed) }
 //            is MultiviewDataItem.Banner -> {(holder as BannerItemViewHolder).bindBannerView(item.bannerItem) }
 //            is MultiviewDataItem.Recommended -> { (holder as CollageItemViewHolder).bingCollage(item.recommended) }
 //            is MultiviewDataItem.TopInIndia ->{ (holder as CollageItemViewHolder).bingCollage(item.topInIndia)}
@@ -94,37 +130,165 @@ class DashboardAdapter(private val dataList: List<MultiviewDataItem>?): Recycler
             null -> {}
         }
     }
-    inner class CarouselItemViewHolder(private val binding: CarouselListItemLayoutBinding) :
+    inner class CarouselItemViewHolder(private val binding: CarouselItemviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
+//        val carouselViewPager2 = view.findViewById<ViewPager2>(R.id.carousel_vp)
+//        val carouselTablayout = view.findViewById<TabLayout>(R.id.carousel_tablayout)
+//
+//        var carouselHolderLayout = view.findViewById<LinearLayout>(R.id.carousel_layout)
+//        val carouselShimmerLayout = view.findViewById<LinearLayout>(R.id.carousel_shimmer_layout)
+//        val carouselShimmer = view.findViewById<ShimmerFrameLayout>(R.id.carousel_shimmer)
 
-        init {
-            binding.carouselListRecyclerView.setHasFixedSize(true)
-            binding.carouselListRecyclerView.layoutManager = LinearLayoutManager(binding.root.context, RecyclerView.HORIZONTAL, false)
+        fun bindCarouselItems(carouselItemList: List<CarouselModel>) {
 
-        }
+             val carouselAdapter = CarouselAdapter(context, carouselItemListener)
+                if (carouselItemList.isNullOrEmpty()) {
+                    "list of carousel is empty/null".logs()
 
-        fun bindCarouselItems(carouselItemList: List<TemplateItem>) {
-            val adapter = CarouselChildAdapter(carouselItemList)
-            binding.carouselListRecyclerView.adapter = adapter
-        }
+                    binding.carouselShimmerLayout.visibility = View.GONE
+                    binding.carouselShimmer.stopShimmer()
+                    "carousel layout visible.".logs()
+                    binding.carouselLayout.visibility = View.GONE
+//                        carouselHolder.carouselViewPager2.visibility = View.GONE
+                }
+                else {
+                    binding.carouselShimmerLayout.visibility = View.GONE
+                    binding.carouselShimmer.stopShimmer()
+                    "carousel layout visible.".logs()
+                    binding.carouselLayout.visibility = View.VISIBLE
+                    val newHeightInDp = 242 // Replace with your desired height in dp
+                    val newHeightInPixels = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        newHeightInDp.toFloat(),
+                        context.resources.displayMetrics
+                    ).toInt()
+
+                    val layoutParams = binding.carouselVp.layoutParams
+                    layoutParams.height = newHeightInPixels
+                    binding.carouselVp.layoutParams = layoutParams
+//                        carouselHolder.carouselViewPager2.visibility = View.VISIBLE
+
+                    carouselAdapter!!.additems(carouselItemList)
+                    binding.carouselVp.adapter = carouselAdapter
+
+                    TabLayoutMediator(
+                        binding.carouselTablayout,
+                        binding.carouselVp
+                    ) { tab, pos ->
+                        //Some implementation
+                    }.attach()
+
+                    binding.carouselVp.clipToPadding = false
+                    binding.carouselVp.setPadding(0,0,0,0)
+                    binding.carouselVp.clipChildren = false
+                    binding.carouselVp.offscreenPageLimit = 3
+                    binding.carouselVp.getChildAt(0).overScrollMode =
+                        RecyclerView.OVER_SCROLL_NEVER
+
+                    val compositePageTransformer = CompositePageTransformer()
+                    compositePageTransformer.addTransformer(MarginPageTransformer(40))
+                    compositePageTransformer.addTransformer(object :
+                        ViewPager2.PageTransformer {
+                        override fun transformPage(page: View, position: Float) {
+                            val r = 1 - Math.abs(position)
+                            page.scaleY = (0.85f + r * 0.15f)
+                        }
+
+                    })
+
+
+
+                    if (!isSliderHandlerStarted) {
+                        slideHandler = Runnable {
+
+                            isSliderHandlerStarted = true
+
+                            numberOfItems =
+                                binding.carouselVp.adapter?.itemCount ?: 0
+                            lastIndex = if (numberOfItems > 0) numberOfItems - 1 else 0
+                            nextItem =
+                                if ( binding.carouselVp.currentItem == lastIndex) 0 else  binding.carouselVp.currentItem + 1
+                            binding.carouselVp.setCurrentItem(nextItem, true)
+//                                Utils.log("inside carousel handler nextItem: " + nextItem)
+                        }
+                    } else {
+                        // stop the handler
+                        //reset all the values to zero
+                        handler.removeCallbacks(slideHandler)
+                        numberOfItems = 0
+                        lastIndex = 0
+                        nextItem = 0
+
+                        slideHandler = Runnable {
+                            numberOfItems =
+                                binding.carouselVp.adapter?.itemCount ?: 0
+                            lastIndex = if (numberOfItems > 0) numberOfItems - 1 else 0
+                            nextItem =
+                                if (binding.carouselVp.currentItem == lastIndex) 0 else binding.carouselVp.currentItem + 1
+                            binding.carouselVp.setCurrentItem(nextItem, true)
+//                                Utils.log("inside carousel handler nextItem: " + nextItem)
+                        }
+                    }
+
+                    binding.carouselVp.setPageTransformer(
+                        compositePageTransformer
+                    )
+
+
+                    binding.carouselVp.registerOnPageChangeCallback(object :
+                        ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
+
+                            if (carouselAdapter != null) {
+                                binding.carouselTablayout.visibility = View.VISIBLE
+                            }
+                            handler.removeCallbacks(slideHandler)
+                            handler.postDelayed(slideHandler, 3000)
+                        }
+                    })
+
+                }
+
+            }
+
 
     }
 
-    inner class RecentItemViewHolder(private val binding: CollageItemListLayoutBinding) :
+    inner class SeriesItemViewHolder(private val binding: SeriesCollectionVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
+//        val title = view.findViewById<TextView>(R.id.title)
+//        val viewAll = view.findViewById<TextView>(R.id.view_all)
+//        val verticalVideosRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
 
         init {
-            binding.collageListRecyclerView.setHasFixedSize(true)
-            binding.collageListRecyclerView.layoutManager =
+            binding.recyclerView.setHasFixedSize(true)
+            binding.recyclerView.layoutManager =
                 LinearLayoutManager(binding.root.context, RecyclerView.HORIZONTAL, false)
         }
 
-        fun bingCollage(collageItemList: List<TemplateItem>) {
-            val adapter = CollageChildAdapter( collageItemList)
-            binding.collageListRecyclerView.adapter = adapter
-        }
+        val childSeriesAdapter = SeriesVideoVerticalAdapter(context, listener)
+        fun bingCollage(SeriesItemList: List<Series>) {
+            binding.title.text = "Series 1" // listItem.title
 
+            //  seriesVerticalHolder.viewAll
+//            seriesVerticalHolder.viewAll.setOnClickListener {
+//                seriesVerticalVideoList?.toMutableList()
+//                    ?.let { it1 -> listener.onSeriesItemClick(listItem,position, it1) }
+//
+//            }
+            if (SeriesItemList.isNullOrEmpty()) {
+                "seriesVerticalVideoList is Empty".logs()
+            } else {
+                "HomepageResponse : ${SeriesItemList}".logs()
+                binding.recyclerView.adapter = childSeriesAdapter
+                childSeriesAdapter.updateItems(SeriesItemList)
+            }
+
+        }
     }
+
+
 
 //    inner class BannerItemViewHolder(private val binding: BannerItemLayoutBinding) :
 //        RecyclerView.ViewHolder(binding.root) {
@@ -178,5 +342,30 @@ class DashboardAdapter(private val dataList: List<MultiviewDataItem>?): Recycler
 //        }
 //
 //    }
-}
+
+        override fun onItemClick(item: Any, position: Int, action: String) {
+            TODO("Not yet implemented")
+            if (item is CarouselModel) {
+                " MinisHomeAdapter item is CarouselModel...".logs1()
+                when (action) {
+                    CarouselAdapter.CarouselItemListener.ACTION_SERIES -> {
+                        " MinisHomeAdapter item is CarouselModel...".logs1()
+                        carouselItemListener.onItemClick(item, position, action)
+
+                    }
+                }
+
+            }
+        }
+
+        override fun onItemClickListener(item: Any, position: Int, data: MutableList<Episode>) {
+            listener?.onItemClickListener(item, position,data)
+        }
+
+
+        override fun onSeriesItemClick(item: Any, position: Int, data: MutableList<Series>) {
+            listener?.onSeriesItemClick(item, position,data)
+        }
+
+    }
 

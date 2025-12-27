@@ -132,7 +132,8 @@ class MinisHomeAdapter(val context: Context, var listener: RecyclerviewClickList
                     carouselHolder.carouselShimmerLayout.visibility = View.VISIBLE
                     carouselHolder.carouselShimmer.startShimmer()
                     carouselHolder.carouselHolderLayout.visibility = View.GONE
-                } else if (listItem is CarouselResponse) {
+                }
+                else if (listItem is CarouselResponse) {
                     " carousel else if carousel".logs()
                     val carouselHolder = holder as CarouselViewHolder
                     "${carouselHolder.carouselShimmerLayout} ${carouselHolder.carouselShimmer} ${carouselHolder.carouselHolderLayout}".logs()
